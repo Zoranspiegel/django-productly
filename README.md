@@ -57,6 +57,7 @@ urlpatterns = [
 from django.urls import path
 from . import views
 
+app_name = 'productos'
 urlpatterns = [
     path('', views.index, name='index')
 ]
@@ -310,7 +311,7 @@ Ahora modificamos el archivo index.html de la aplicación 'productos' para que e
 
 urlpatterns = [
    # ...
-   path('<int:producto_id>', views.detalle, name='producto_detalle')
+   path('<int:producto_id>', views.detalle, name='detalle')
 ]
 ```
 
@@ -359,4 +360,17 @@ def detalle(request: HttpRequest, producto_id: str):
         'detalle.html',
         context={'producto': producto}
     )
+```
+
+### G6. Links
+
+#### cd productos/index.html
+```html
+<!-- ... -->
+ <td>
+    <a href="{% url 'productos:detalle' producto.id %}">
+      {{ producto.nombre }}
+    </a>
+  </td>
+<!-- ... -->
 ```
