@@ -292,10 +292,54 @@ TEMPLATES = [
 Ahora modificamos el archivo index.html de la aplicación 'productos' para que extienda el template base:
 
 #### cd productos/templates/index.html
+
 ```html
 {% extends 'base.html' %}
 
 {% block content %}
 <!-- Nuestro código HTML aquí -->
 {% endblock %}
+```
+
+### G4. Detalle Template Dynamic Route
+
+#### cd productos/urls.py
+
+```python
+# ...
+
+urlpatterns = [
+   # ...
+   path('<int:producto_id>', views.detalle, name='producto_detalle')
+]
+```
+
+#### cd productos/views.py
+```python
+# ...
+
+def detalle(request: HttpRequest, producto_id: str):
+    producto = Producto.objects.get(id=producto_id)
+
+    return render(
+        request,
+        'detalle.html',
+        context={'producto': producto}
+    )
+```
+
+#### cd productos/templates/detalle.html
+```html
+{% extends 'base.html' %}
+
+{% block content %}
+<div>
+  <h6>{{ producto.nombre }}</h6>
+  <p>{{ producto.categoria }}</p>
+  <p>{{ producto.stock }}</p>
+  <p>{{ producto.puntaje }}</p>
+  <p>{{ producto.creado_en }}</p>
+</div>
+{% endblock %}
+
 ```
