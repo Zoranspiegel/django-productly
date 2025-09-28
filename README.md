@@ -68,10 +68,10 @@ urlpatterns = [
 
 ```python
 from django.shortcuts import render
-from django.http import HttpResponse
+from django.http import HttpRequest, HttpResponse
 
 
-def index(request):
+def index(request: HttpRequest):
     return HttpResponse('Hola Mundo')
 ```
 
@@ -161,4 +161,81 @@ class ProductoAdmin(admin.ModelAdmin):
 
 
 # Register your models here.
+```
+
+## G. Views
+
+### G1. Productos GET & JSON Response
+
+#### cd productos/views.py
+
+```python
+from django.shortcuts import render
+from django.http import HttpRequest, HttpResponse, JsonResponse
+from .models import Producto
+
+# Create your views here.
+
+
+def index(request: HttpRequest):
+    productos = Producto.objects.all().values()
+    # productos = Producto.objects.filter(puntaje=5)
+    # productos = Producto.objects.filter(puntaje_gte=3)
+    # productos = Producto.objects.filter(puntaje_lte=3)
+    # productos = Producto.objects.filter(puntaje_gt=3)
+    # productos = Producto.objects.filter(puntaje_lt=3)
+    # productos = Producto.objects.get(id=1)
+    # productos = Producto.objects.get(pk=1)
+
+    return JsonResponse(list(productos), safe=False)
+```
+
+### G2. HTML Template
+
+#### cd productos/views.py
+
+```python
+from django.shortcuts import render
+from django.http import HttpRequest, HttpResponse, JsonResponse
+from .models import Producto
+
+# Create your views here.
+
+
+def index(request: HttpRequest):
+    productos = Producto.objects.all()
+
+    return render(
+        request,
+        'index.html',
+        context={'productos': productos}
+    )
+```
+
+#### cd productos/templates/index.html
+
+```html
+<h1>Productos</h1>
+
+<table class="table">
+  <thead>
+    <tr>
+      <th>Nombre</th>
+      <th>Stock</th>
+      <th>Puntaje</th>
+      <th>Categoría</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    {% for producto in productos %}
+    <tr>
+      <td>{{ producto.nombre }}</td>
+      <td>{{ producto.stock }}</td>
+      <td>{{ producto.puntaje }}</td>
+      <td>{{ producto.categoria }}</td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
 ```
