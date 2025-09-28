@@ -144,3 +144,21 @@ from .models import Categoria, Producto
 admin.site.register(Categoria)
 admin.site.register(Producto)
 ```
+
+### F3. Edit Model Admin View and Form Fields
+
+#### cd productos/admin.py
+
+```python
+class CategoriaAdmin(admin.ModelAdmin):
+    exclude = ('creado_en', )
+    list_display = ('id', 'nombre')
+
+
+class ProductoAdmin(admin.ModelAdmin):
+    exclude = ('creado_en', )
+    list_display = ('id', 'nombre', 'stock', 'creado_en')
+
+
+# Register your models here.
+```
