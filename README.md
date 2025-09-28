@@ -42,6 +42,7 @@ INSTALLED_APPS = [
 #### cd urls.py
 
 ```python
+from django.contrib import admin
 from django.urls import path, include  # Added 'include'
 
 urlpatterns = [
@@ -66,13 +67,17 @@ urlpatterns = [
 #### cd productos/views.py
 
 ```python
+from django.shortcuts import render
 from django.http import HttpResponse
+
 
 def index(request):
     return HttpResponse('Hola Mundo')
 ```
 
-### D4. Define Models
+## E. Database
+
+### E1. Define Models
 
 #### cd productos/models.py
 
@@ -99,14 +104,37 @@ class Producto(models.Model):
     creado_en = models.DateTimeField(default=timezone.now)
 ```
 
-### D5. Make Migrations
+### E2. Make Migrations
 
 ```bash
 python manage.py makemigrations
 ```
 
-### D6. Migrate
+### E3. Migrate
 
 ```bash
 python manage.py migrate
+```
+
+## F. Admin
+
+### F1. Create Admin User
+
+Tras ingresar el siguiente comando se debe definir desde la terminal un nombre de usuario, un correo electrónico y una contraseña:
+
+```bash
+python manage.py createsuperuser
+```
+
+### F2. Register Models
+
+#### cd productos/admin.py
+
+```python
+from django.contrib import admin
+from .models import Categoria, Producto
+
+# Register your models here.
+admin.site.register(Categoria)
+admin.site.register(Producto)
 ```
