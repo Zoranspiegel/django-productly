@@ -89,6 +89,9 @@ from django.utils import timezone
 class Categoria(models.Model):
     nombre = models.CharField(max_length=255)
 
+    def __str__(self):
+        return self.nombre
+
 
 class Producto(models.Model):
     nombre = models.CharField(max_length=255)
@@ -102,6 +105,9 @@ class Producto(models.Model):
     # SET_DEFAULT: asigna valor por defecto
     # categoria = models.ForeignKey(Categoria, on_delete=models.CASCADE, default=<value>)
     creado_en = models.DateTimeField(default=timezone.now)
+
+    def __str__(self):
+        return self.nombre
 ```
 
 ### E2. Make Migrations
