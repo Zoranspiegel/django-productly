@@ -13,11 +13,13 @@ django-admin startproject <project-name> .
 ```
 
 ## C. Run Django Project
+
 ```bash
 python manage.py runserver
 ```
 
 ## D. Create New App Template
+
 ```bash
 python manage.py startapp productos
 ```
@@ -25,6 +27,7 @@ python manage.py startapp productos
 ### D1. App Set Up
 
 #### cd settings.py
+
 Desde productos/apps.py se copia el nombre de la clase. En este caso 'ProductosConfig'
 
 ```python
@@ -74,6 +77,10 @@ def index(request):
 #### cd productos/models.py
 
 ```python
+from django.db import models
+from django.utils import timezone
+
+
 class Categoria(models.Model):
     nombre = models.CharField(max_length=255)
 
@@ -89,14 +96,17 @@ class Producto(models.Model):
     # SET_NULL: actualiza a valor nulo
     # SET_DEFAULT: asigna valor por defecto
     # categoria = models.ForeignKey(Categoria, on_delete=models.CASCADE, default=<value>)
+    creado_en = models.DateTimeField(default=timezone.now)
 ```
 
 ### D5. Make Migrations
+
 ```bash
 python manage.py makemigrations
 ```
 
 ### D6. Migrate
+
 ```bash
 python manage.py migrate
 ```
