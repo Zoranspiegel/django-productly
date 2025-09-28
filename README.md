@@ -239,3 +239,63 @@ def index(request: HttpRequest):
   </tbody>
 </table>
 ```
+
+### G3. Common Base Template
+
+Creamos un html base que compartiran todos los demás templates de los diferentes proyectos. Y aprovechamos, en este ejemplo, para integrar bootstrap al HTML.
+
+#### cd templates/base.html (create dir & file)
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Productly</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB"
+      crossorigin="anonymous"
+    />
+  </head>
+  <body>
+    {% block content %}
+    {% endblock %}
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
+      crossorigin="anonymous"
+    ></script>
+  </body>
+</html>
+```
+
+Crear el archivo no es suficiente. Para hacerlo disponible debemos agregar la ruta al archivo settings.py
+
+#### cd productly/settings.py
+
+```python
+import os
+# ...
+TEMPLATES = [
+    {
+        # ...
+        'DIRS': [os.path.join(BASE_DIR, 'templates')],
+        # ...
+    },
+]
+# ...
+```
+
+Ahora modificamos el archivo index.html del proyecto 'productos' para que extienda el template base:
+
+#### cd productos/templates/index.html
+```html
+{% extends 'base.html' %}
+
+{% block content %}
+<!-- Nuestro código HTML aquí -->
+{% endblock %}
+```
