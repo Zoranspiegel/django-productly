@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from django.http import HttpRequest
 from .models import Producto
 
@@ -16,7 +16,7 @@ def index(request: HttpRequest):
 
 
 def detalle(request: HttpRequest, producto_id: str):
-    producto = Producto.objects.get(id=producto_id)
+    producto = get_object_or_404(Producto, id=producto_id)
 
     return render(
         request,

@@ -343,3 +343,20 @@ def detalle(request: HttpRequest, producto_id: str):
 {% endblock %}
 
 ```
+
+### G5. 404 page for object not found
+
+#### cd productos/views.py
+```python
+from django.shortcuts import render, get_object_or_404
+# ...
+
+def detalle(request: HttpRequest, producto_id: str):
+    producto = get_object_or_404(Producto, id=producto_id)  # Cambio
+
+    return render(
+        request,
+        'detalle.html',
+        context={'producto': producto}
+    )
+```
