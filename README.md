@@ -242,7 +242,7 @@ def index(request: HttpRequest):
 
 ### G3. Common Base Template
 
-Creamos un html base que compartiran todos los demás templates de los diferentes proyectos. Y aprovechamos, en este ejemplo, para integrar bootstrap al HTML.
+Creamos un html base que compartiran todos los demás templates de los diferentes aplicaciones. Y aprovechamos, en este ejemplo, para integrar bootstrap al HTML.
 
 #### cd templates/base.html (create dir & file)
 
@@ -289,7 +289,7 @@ TEMPLATES = [
 # ...
 ```
 
-Ahora modificamos el archivo index.html del proyecto 'productos' para que extienda el template base:
+Ahora modificamos el archivo index.html de la aplicación 'productos' para que extienda el template base:
 
 #### cd productos/templates/index.html
 ```html
