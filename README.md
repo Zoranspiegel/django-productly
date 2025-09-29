@@ -414,6 +414,7 @@ class ProductoForm(ModelForm):
 {% block content %}
 
 <form
+  novalidate
   action="{% url 'productos:formulario' %}"
   method="post"
 >
@@ -457,4 +458,28 @@ urlpatterns = [
     # ...
     path('formulario', views.formulario, name='formulario')
 ]
+```
+
+### H4. Form Customization
+
+#### cd templates/form_snippet.html (create file)
+```django
+{% for field in form %}
+    {{ field.label_tag }} {{ field }}
+    {% for error in field.errors %}
+        {{ error }}
+    {% endfor %}
+{% endfor %}
+```
+
+#### cd productly/settings.py
+```python
+# ...
+from django.forms.renderers import TemplatesSetting
+
+class CustomFormRenderer(TemplatesSetting):
+    form_template_name = 'form_snippet.html'
+
+FORM_RENDERER = "productly.settings.CustomFormRenderer"
+# ...
 ```
