@@ -483,3 +483,40 @@ class CustomFormRenderer(TemplatesSetting):
 FORM_RENDERER = "productly.settings.CustomFormRenderer"
 # ...
 ```
+
+## I. Home Page
+
+### I1. Base Template
+
+#### cd templates/inicio.html (create file)
+```django
+{% extends "base.html" %}
+{% block content %}
+    <h1>Bienvenido a Productly</h1>
+{% endblock  %}
+```
+
+#### cd productly/views.py (create file)
+```python
+from django.shortcuts import render
+from django.http import HttpRequest
+
+
+def inicio(request: HttpRequest):
+    return render(
+        request,
+        "inicio.html"
+    )
+
+```
+
+#### cd productly/urls.py
+```python
+# ...
+from . import views
+
+urlpatterns = [
+    path('', views.inicio, name="inicio"),
+    # ...
+]
+```
