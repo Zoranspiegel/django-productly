@@ -215,7 +215,7 @@ def index(request: HttpRequest):
 
 #### cd productos/templates/index.html
 
-```html
+```django
 <h1>Productos</h1>
 
 <table class="table">
@@ -247,7 +247,7 @@ Creamos un html base que compartiran todos los demás templates de los diferente
 
 #### cd templates/base.html (create dir & file)
 
-```html
+```django
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -294,7 +294,7 @@ Ahora modificamos el archivo index.html de la aplicación 'productos' para que e
 
 #### cd productos/templates/index.html
 
-```html
+```django
 {% extends 'base.html' %}
 
 {% block content %}
@@ -330,7 +330,7 @@ def detalle(request: HttpRequest, producto_id: str):
 ```
 
 #### cd productos/templates/detalle.html
-```html
+```django
 {% extends 'base.html' %}
 
 {% block content %}
@@ -365,7 +365,7 @@ def detalle(request: HttpRequest, producto_id: str):
 ### G6. Links
 
 #### cd productos/index.html
-```html
+```django
 <!-- ... -->
  <td>
     <a href="{% url 'productos:detalle' producto.id %}">
@@ -373,4 +373,88 @@ def detalle(request: HttpRequest, producto_id: str):
     </a>
   </td>
 <!-- ... -->
+```
+
+## H. Forms
+
+### H1. Form from Model Class
+
+#### cd productly/settings.py
+```python
+# ...
+INSTALLED_APPS = [
+    # ...
+    'django.forms', # Added line
+    'productos.apps.ProductosConfig',
+]
+# ...
+```
+
+#### cd productos/forms.py (create file)
+
+```python
+from . import models
+from django.forms import ModelForm
+
+
+class ProductoForm(ModelForm):
+    class Meta:
+        model = models.Producto
+        fields = ["nombre", "stock", "puntaje", "categoría"]
+
+```
+
+### H2. Form HTML
+
+#### cd productos/templates/producto_form.html (created file)
+
+```django
+{% extends 'base.html' %}
+
+{% block content %}
+
+<form
+  action="{% url 'productos:formulario' %}"
+  method="post"
+>
+  {% csrf_token %}
+  {{ form }}
+  <input type="submit" value="Enviar" />
+</form>
+
+{% endblock %}
+```
+
+### H3. Views Integration
+
+#### cd productos/views.py
+```python
+# ...
+from django.http import HttpRequest, HttpResponseRedirect # New Import
+from .forms import ProductoForm
+
+# ...
+def formulario(request: HttpRequest):
+    if request.method == 'POST':
+        form = ProductoForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return HttpResponseRedirect('/productos')
+    else:
+        form = ProductoForm()
+
+    return render(
+        request,
+        'producto_form.html',
+        context={'form': form}
+    )
+```
+
+#### cd productos/urls.py
+```python
+# ...
+urlpatterns = [
+    # ...
+    path('formulario', views.formulario, name='formulario')
+]
 ```
